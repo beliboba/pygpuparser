@@ -29,23 +29,27 @@ def get_price(obj: any):
 		obj
 		.find('div', class_='ProductCardHorizontal__buy-block')
 		.find('div', class_='ProductCardHorizontal__price-block')
-		.find('div', class_='ProductPrice')
+		.find('div', class_='ProductPrice ProductPrice_default ProductPrice_size_m ProductCardHorizontal__price')
 		.find('span', class_='ProductPrice__price')
 	).text.strip()
 	return price[:-1].strip()
+
+
+def get_link(obj: any):
+	return "https://citilink.ru" + obj.find('a', class_='ProductCardHorizontal__title')['href']
 
 
 def main(mode: int):
 	gpus = soup.findAll('div', class_='product_data__gtm-js')
 	for gpu in gpus:
 		if mode == 2:
-			print(f"{get_name(gpu)}\n{get_properties(gpu)}\n{get_price(gpu)}")
+			print(f"{get_name(gpu)}\n{get_properties(gpu)}\n{get_price(gpu)}\n{get_link(gpu)} \n")
 		else:
-			console.print(Panel(f"[yellow bold]{get_name(gpu)}[/] \n[black]{get_properties(gpu)}[/]\n[green]{get_price(gpu)} Руб.[/]"), justify='center')
+			console.print(Panel(f"[yellow bold]{get_name(gpu)}[/] \n{get_properties(gpu)}\n[green]{get_price(gpu)} Руб.[/]\n {get_link(gpu)}"), justify='center')
 
 
 def launch():
-	console.print('Выбери режим работы:\n1.[green]Console[/] - будет выводить всё в консоль\n2.[black]File[/] - будет выводить всё в [yellow]output.txt[/]')
+	console.print('Выбери режим работы:\n1.[green]Console[/] - будет выводить всё в консоль\n2.File - будет выводить всё в [yellow]output.txt[/]')
 	mode = int(console.input('Режим:'))
 	if mode == 1:
 		main(mode=1)
